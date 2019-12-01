@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	<title>Task Manager - Update</title>
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<h1>Update Task </h1>
+	
+		<form action="/update/{{ task.id }}" method="POST" class="container">
+			<input type="text" name="content" placeholder="{{ task.content }}" autocomplete="off" id="content" class="form-control-sm form-control">
+			<div class="form-group">
+				<label class="form-control-label">Date to do task :</label>
+				<input type="date" name="date_todo_task" id="todo_task" class=" form-control form-control-sm">
+			</div>
+			<div class="form-group">
+				<label class="form-control-label">Date to complete task :</label>
+				<input type="date" name="date_task_completed" id="Completed" class="form-control form-control-sm">
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Update Task" class="btn btn-outline-warning">
+			</div>
+		</form>
+	</div>
+	
+<script>
+	document.querySelector('form').onsubmit = function(){
+		if (!document.querySelector('input').value) {
+			alert("Please provide your task title")
+			return false
+		}
+		else if (!document.querySelector('#todo_task').value) {
+			alert("Please provide your task your date to do your task");
+			return false
+		}
+		else if (!document.querySelector('#Completed').value) {
+			alert("Please provide your task your date to complte your task");
+			return false
+		}
+		return true
+	}
+</script>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	<title>Task Manager - Home</title>
+{% endblock %}
+
+{% block body %}
+
+	<div class="container-fluid table-responsive">
+		<h1>{{ current_user.username }} Task Manager</h1>
+				{% if found == 0 %}
+					<h4>You do not have any task in your To Do List. Add a task</h4>
+				{% else %}
+					<table class="table table-bordered table-dark table-hover">
+						<thead class="bg-warning">
+							<tr>
+								<th scope="col">Task title</th>
+								<th scope="col">Date created</th>
+								<th scope="col">Date do task</th>
+								<th scope="col">End date of task</th>
+								<th scope="col">Actions on task</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for task in tasks %}
+								{% if task.owner.username == current_user.username %}
+									<tr>
+								
+										<td>{{ task.content }}</td>
+										<td>{{ task.date_created.date() }}</td>
+										<td>{{ task.date_todo.date() }}</td>
+										<td>{{ task.date_completed.date() }}</td>
+										<td>
+											<a href="/update/{{task.id}}">Update</a>
+											<a href="/delete/{{task.id}}">Delete</a>
+										</td>
+								
+									</tr>
+								{% endif %}
+
+							{% endfor %}
+						</tbody>
+					</table>
+				{% endif %}			
+		
+	</div>
+	<button onclick="showform()" id="add_taskbutton" class="ml-2 btn btn-outline-warning">Add Task</button>
+	<button onclick="hideform()" id="hideform" class="ml-2 btn btn-outline-warning">Hide Form</button>
+	<div class="row">
+		<div class="col-3-md"></div>
+		<div class="col-6-md col-8-sm container">
+			<form action="/home" method="POST" class="container" id="form_task">
+				<input type="text" name="content" placeholder="add your task title" autocomplete="off" id="content" class="form-control-sm form-control">
+				<div class="form-group">
+					<label class="form-control-label">Date to do task :</label>
+					<input type="date" name="date_todo_task" id="todo_task" class=" form-control form-control-sm">
+				</div>
+				<div class="form-group">
+					<label class="form-control-label">Date to complete task :</label>
+					<input type="date" name="date_task_completed" id="Completed" class="form-control form-control-sm">
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Add Task" class="btn btn-outline-warning" id="add_task" 
+					onclick="hideform()">
+				</div>
+			
+			</form>
+		</div>
+		<div class="col-3-md"></div>
+	</div>
+		
+
+	
+<script>
+
+
+	document.querySelector('form').onsubmit = function(){
+		if (!document.querySelector('input').value) {
+			alert("Please provide your task title")
+			return false
+		}
+		else if (!document.querySelector('#todo_task').value) {
+			alert("Please provide your task your date to do your task")
+			return false
+		}
+		else if (!document.querySelector('#Completed').value) {
+			alert("Please provide your task your date to complte your task")
+			return false
+		}
+		return true
+	}
+	function hideform(){
+		document.getElementById('form_task').style.display = "none"
+		document.getElementById("hideform").style.display = "none"
+		document.getElementById('add_taskbutton').style.display = "inline"
+	}
+	function showform(){
+		document.getElementById('form_task').style.display = "block"
+		document.getElementById('add_taskbutton').style.display = "none"
+		document.getElementById('hideform').style.display = "block"
+	}
+	
+</script>
+{% endblock %}
